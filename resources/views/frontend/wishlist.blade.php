@@ -34,7 +34,7 @@
                     <!-- SINGLE SIDEBAR TAG END -->
                 </div>
                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
-                    <h2 class="page-title">My wishlists</h2>
+                    <h2 class="page-title">{{__('Danh sách yêu thích')}}</h2>
                     <!-- WISHLISTS-AREA START -->
                     <div class="wishlists-area">
                         <form class="new-wishlists-box primari-box" id="savewishlist" method="post" action="#">
@@ -55,13 +55,11 @@
                     <div class="wishlists-chart table-responsive">
                         <table class="table table-bordered">
                             <tr>
-                                <th class="wish-name">Name</th>
-                                <th class="wish-qty">Qty</th>
-                                <th class="wish-view">Viewed</th>
-                                <th class="wish-create">Created</th>
-                                <th class="wish-link">Direct Link</th>
-                                <th class="wish-default">Default</th>
-                                <th class="wish-delete">Delete</th>
+                                <th class="wish-name">{{__('Sản phẩm')}}</th>
+                                <th class="wish-qty">{{__('Ảnh sản phẩm')}}</th>
+                                <th class="wish-create">{{__('Ngày')}}</th>
+                                <th class="wish-link">{{__('Chi tiết')}}</th>
+                                <th class="wish-delete">{{__('Xóa')}}</th>
                             </tr>
                             <tr>
                                 <td>
@@ -71,18 +69,12 @@
                                     <span>3</span>
                                 </td>
                                 <td>
-                                    <span>0</span>
-                                </td>
-                                <td>
                                     <span>2015-08-06</span>
                                 </td>
                                 <td>
                                     <a href="#">View </a>
                                 </td>
-                                <td>
-                                    <span><i class="fa fa-check-square"></i></span>
-                                </td>
-                                <td>
+                                   <td>
                                     <a class="dele-wish-list" href="#"><i class="fa fa-close"></i></a>
                                 </td>
                             </tr>

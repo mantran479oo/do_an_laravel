@@ -16,5 +16,5 @@ interface RepositoryInterface
 
     public function insert(array $attributes);
 
-    public function findOrFail(int $id);
+    public function findOrFail($id);
 }

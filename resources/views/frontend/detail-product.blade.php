@@ -15,6 +15,7 @@
                     <!-- BSTORE-BREADCRUMB END -->
                 </div>
             </div>
+
             <div class="row">
                 <div class="col-lg-9 col-md-9 col-sm-9 col-xs-12">
                     <!-- SINGLE-PRODUCT-DESCRIPTION START -->
@@ -25,9 +26,9 @@
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="thumbnail_1">
                                         <div class="single-product-image">
-                                            <img src={{asset('img/product/sale/1.jpg')}} alt="single-product-image" />
+                                            <img style="height: 324px; width: 324px;" src={{asset('images/product/'.$detail->image)}} alt="single-product-image" />
                                             <a class="new-mark-box" href="#">new</a>
-                                            <a class="fancybox" href={{asset('img/product/sale/1.jpg')}} data-fancybox-group="gallery"><span class="btn large-btn">View larger <i class="fa fa-search-plus"></i></span></a>
+                                            <a class="fancybox"  href={{asset('images/product/'.$detail->image)}} data-fancybox-group="gallery"><span class="btn large-btn">View larger <i class="fa fa-search-plus"></i></span></a>
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="thumbnail_2">
@@ -71,7 +72,7 @@
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs select-product-tab bxslider">
                                     <li class="active">
-                                        <a href="#thumbnail_1" data-toggle="tab"><img src={{asset('img/product/sidebar_product/1.jpg')}} alt="pro-thumbnail" /></a>
+                                        <a href="#thumbnail_1" data-toggle="tab"><img  src={{asset('images/product/'.$detail->image)}} alt="pro-thumbnail" /></a>
                                     </li>
                                     <li>
                                         <a href="#thumbnail_2" data-toggle="tab"><img src={{asset('img/product/sidebar_product/2.jpg')}} alt="pro-thumbnail" /></a>
@@ -93,7 +94,7 @@
                         </div>
                         <div class="col-lg-7 col-md-7 col-sm-8 col-xs-12">
                             <div class="single-product-descirption">
-                                <h2>Faded Short Sleeves T-shirt</h2>
+                                <h2><?= $detail->name ?></h2>
                                 <div class="single-product-social-share">
                                     <ul>
                                         <li><a href="#" class="twi-link"><i class="fa fa-twitter"></i>Tweet</a></li>
@@ -118,16 +119,28 @@
                                     </div>
                                 </div>
                                 <div class="single-product-condition">
-                                    <p>Reference: <span>demo_1</span></p>
-                                    <p>Condition: <span>New product</span></p>
+                                    <p>Trạng thái: <span>Sản phẩm <?= ($detail->new === 1) ? 'mới':'giảm giá' ?></span></p>
                                 </div>
-                                <div class="single-product-price">
-                                    <h2>$16.51</h2>
+                                @php
+                                    if($detail->new == 2){
+                                        $discount = getPriceSale($detail->price,$detail->getSales->value);
+                                        $price = $detail->price;
+                                    }else{
+                                        $discount = $detail->price;
+                                        $price = 0;
+                                    }
+                                @endphp
+                                <div class="single-product-price ">
+                                    <h2 class="products-price"><?= number_format($discount) ?> đồng</h2>
+                                </div>
+                                <div class="price-box">
+                                    <span class="old-price"><?= ($price != 0) ? number_format($price).' đồng':'' ?></span>
                                 </div>
                                 <div class="single-product-desc">
-                                    <p>Faded short sleeves t-shirt with high neckline. Soft and stretchy material for a comfortable fit. Accessorize with a straw hat and you're ready for summer!</p>
+                                    <p><?= $detail->description ?></p>
                                     <div class="product-in-stock">
-                                        <p>300 Items<span>In stock</span></p>
+                                        <?php $amount = $detail->amount;?>
+                                        <p><?= $amount ?> Items<span><?= ($amount >0) ?  'In stock':'Out stock'?></span></p>
                                     </div>
                                 </div>
                                 <div class="single-product-info">
@@ -139,25 +152,20 @@
                                     <p class="small-title">Quantity</p>
                                     <div class="cart-quantity">
                                         <div class="cart-plus-minus-button single-qty-btn">
-                                            <input class="cart-plus-minus sing-pro-qty" type="text" name="qtybutton" value="0">
+                                            <input class="cart-plus-minus sing-pro-qty" id="quantity"  type="number"  value="1" min="1" max="10" name="quantity" >
                                         </div>
                                     </div>
                                 </div>
-                                <div class="single-product-size">
-                                    <p class="small-title">Size </p>
-                                    <select name="product-size" id="product-size">
-                                        <option value="">S</option>
-                                        <option value="">M</option>
-                                        <option value="">L</option>
-                                    </select>
-                                </div>
-                                <div class="single-product-color">
-                                    <p class="small-title">Color </p>
-                                    <a href="#"><span></span></a>
-                                    <a class="color-blue" href="#"><span></span></a>
-                                </div>
+{{--                                <div class="single-product-size">--}}
+{{--                                    <p class="small-title">Size </p>--}}
+{{--                                    <select name="product-size" id="product-size">--}}
+{{--                                        <option value="">S</option>--}}
+{{--                                        <option value="">M</option>--}}
+{{--                                        <option value="">L</option>--}}
+{{--                                    </select>--}}
+{{--                                </div>--}}
                                 <div class="single-product-add-cart">
-                                    <a class="add-cart-text" title="Add to cart" href="#">Add to cart</a>
+                                    <button type="button" class="add-cart-text"  data-url="{{route('addToCart',['id'=>$detail->id])}}"  title="Thêm giỏ hàng">Thêm giỏ hàng</button>
                                 </div>
                             </div>
                         </div>
@@ -169,15 +177,15 @@
                             <div class="product-more-info-tab">
                                 <!-- Nav tabs -->
                                 <ul class="nav nav-tabs more-info-tab">
-                                    <li class="active"><a href="#moreinfo" data-toggle="tab">more info</a></li>
-                                    <li><a href="#datasheet" data-toggle="tab">data sheet</a></li>
-                                    <li><a href="#review" data-toggle="tab">reviews</a></li>
+                                    <li class="active"><a href="#moreinfo" data-toggle="tab">Mô tả</a></li>
+                                    <li><a href="#datasheet" data-toggle="tab">Chi tiết</a></li>
+                                    <li><a href="#review" data-toggle="tab">Đánh giá</a></li>
                                 </ul>
                                 <!-- Tab panes -->
                                 <div class="tab-content">
                                     <div class="tab-pane active" id="moreinfo">
                                         <div class="tab-description">
-                                            <p>Fashion has been creating well-designed collections since 2010. The brand offers feminine designs delivering stylish separates and statement dresses which have since evolved into a full ready-to-wear collection in which every item is a vital part of a woman's wardrobe. The result? Cool, easy, chic looks with youthful elegance and unmistakable signature style. All the beautiful pieces are made in Italy and manufactured with the greatest attention. Now Fashion extends to a range of accessories including shoes, hats, belts and more!</p>
+                                            <p><?= $detail->description ?></p>
                                         </div>
                                     </div>
                                     <div class="tab-pane" id="datasheet">
@@ -205,13 +213,7 @@
                                             <div class="col-xs-5 col-sm-4 col-md-4 col-lg-3 padding-5">
                                                 <div class="tab-rating-box">
                                                     <span>Grade</span>
-                                                    <div class="rating-box">
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star"></i>
-                                                        <i class="fa fa-star-half-empty"></i>
-                                                    </div>
+                                                    <div id="rateYo"></div>
                                                     <div class="review-author-info">
                                                         <strong>write A REVIEW</strong>
                                                         <span>06/22/2015</span>
@@ -617,36 +619,21 @@
                 <div class="col-lg-3 col-md-3 col-sm-3 col-xs-12">
                     <!-- SINGLE SIDE BAR START -->
                     <div class="single-product-right-sidebar">
-                        <h2 class="left-title">Viewed products</h2>
-                        <ul>
+                        <h2 class="left-title">Sản phẩm đã xem</h2>
+                        <ul >
+                            @if(session('view'))
+                            <?php foreach (session('view') as $view) : ?>
                             <li>
-                                <a href="#"><img src={{asset('img/product/sidebar_product/2.jpg')}} alt="" /></a>
+                                <a href="{{route('home.detail-product',$view['id'])}}"><img style="height: 80px ; width: 80px" src={{asset('images/product/'.$view['image'])}} alt="" /></a>
                                 <div class="r-sidebar-pro-content">
-                                    <h5><a href="#">Faded Short ...</a></h5>
-                                    <p>Faded short sleeves t-shirt with high...</p>
+                                    <h5><a href="{{route('home.detail-product',$view['id'])}}"><?= $view['name'] ?></a></h5>
+                                    <p><?= $view['description'] ?></p>
                                 </div>
                             </li>
-                            <li>
-                                <a href="#"><img src={{asset('img/product/sidebar_product/4.jpg')}} alt="" /></a>
-                                <div class="r-sidebar-pro-content">
-                                    <h5><a href="#">Printed Chif ..</a></h5>
-                                    <p>Printed chiffon knee length dress...</p>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="#"><img src={{asset('img/product/sidebar_product/6.jpg')}} alt="" /></a>
-                                <div class="r-sidebar-pro-content">
-                                    <h5><a href="#">Printed Sum ...</a></h5>
-                                    <p>Long printed dress with thin...</p>
-                                </div>
-                            </li>
-                            <li>
-                                <a href="#"><img src={{asset('img/product/sidebar_product/1.jpg')}} alt="" /></a>
-                                <div class="r-sidebar-pro-content">
-                                    <h5><a href="#">Printed Dress </a></h5>
-                                    <p>100% cotton double printed dress....</p>
-                                </div>
-                            </li>
+                                <?php endforeach?>
+                            @else
+                            <li>Không có sản phẩm</li>
+                            @endif
                         </ul>
                     </div>
                     <!-- SINGLE SIDE BAR END -->
@@ -678,4 +665,35 @@
         </div>
     </section>
     <!-- MAIN-CONTENT-SECTION END -->
+    <script>
+        $(".add-cart-text").click(function (event) {
+            event.preventDefault();
+            let urls = $(this).data('url');
+            let qty = $("#quantity").val();
+            let price = ($(".products-price").text());
+            $.ajax({
+                type : "POST",
+                url : urls,
+                dataType : 'json',
+                data : {
+                    _token: '{{ csrf_token() }}',
+                    'quantity': qty,
+                    'price' : price
+                },
+                success : function (item) {
+                    alertify.success(item.message);
+                    $(".shopping-cart").load($(location).attr('href') +" .shopping-cart");
+                },
+                error : function () {
+
+                }
+            })
+        })
+        var stock = $(".product-in-stock span").text();
+                if (stock === 'Out stock') {
+                    $(".product-in-stock span").css("background-color", "red","pointer-events","none");
+                    $(".add-cart-text").css("pointer-events","none").text('Hết hàng');
+                }
+    </script>
+
 @endsection

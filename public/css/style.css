@@ -1162,6 +1162,7 @@ div.nivo-controlNav a.active{
 .product-info{}
 .product-info a{
 	color: #000;
+	height: 40px;
 	display: block;
 	font-family: 'Bitter', serif;
 	font-size: 14px;

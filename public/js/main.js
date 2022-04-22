@@ -229,7 +229,20 @@ $(document).ready(function(){
 		  }
 		$button.parent().find("input").val(newVal);
 	  });
-		
-}); 
+
+	/*-----------------------------------------
+  cart plus minus button
+--------------------------------------------*/
+	  let $elm_value = $(".value");
+	  $('.increase').click(function () {
+		  let $value_increase = parseInt($elm_value.text());
+		  if($value_increase<=1){
+			  alert('<1')
+			  return false
+		  }
+		  $elm_value.text($value_increase - 1);
+	  })
+
+});
 
 })(jQuery);	

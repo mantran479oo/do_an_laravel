@@ -37,10 +37,10 @@ abstract class EloquentRepository implements RepositoryInterface
     }
 
     /**
-     * @param  int $id
-     * @return Collection
+     * @param $id
+     * @return mixed
      */
-    public function findOrFail(int $id): Collection
+    public function findOrFail($id)
     {
         return $this->_model->findOrFail($id);
     }
@@ -48,9 +48,8 @@ abstract class EloquentRepository implements RepositoryInterface
     /**
      * get product coverage
      * @param int $id
-     * @return Collection
      */
-    public function find(int $id): Collection
+    public function find(int $id)
     {
         return $this->_model->find($id);
     }

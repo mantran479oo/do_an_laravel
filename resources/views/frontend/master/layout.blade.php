@@ -72,6 +72,12 @@
     <!-- IE CSS
     ============================================ -->
     <link rel="stylesheet" href="{{asset('css/ie.css')}}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/css/alertify.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
+    <script src="//cdn.jsdelivr.net/npm/alertifyjs@1.13.1/build/alertify.min.js"></script>
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
 
     <!-- MODERNIZR JS
     ============================================ -->
@@ -127,11 +133,11 @@
                 <div class="header-right-menu">
                     <nav>
                         <ul class="list-inline">
-                            <li><a href="{{route('home.checkout-cart')}}">Thanh toán</a></li>
-                            <li><a href="wishlist.html">Yêu thích</a></li>
-                            <li><a href="my-account.html">Tài khỏa của tôi</a></li>
-                            <li><a href="{{route('home.shopping-cart')}}">Giỏ hàng</a></li>
-                            <li><a href="{{route('home.registration')}}">Đăng nhập</a></li>
+                            <li><a href="{{route('home.checkout-cart')}}">{{ __('Thanh toán')}}</a></li>
+                            <li><a href="{{route('home.wish-list')}}">{{__('Yêu thích')}}</a></li>
+                            <li><a href="{{route('home.my-account')}}">{{ __('Tài khỏa của tôi')}}</a></li>
+                            <li><a href="{{route('home.shopping-cart')}}">{{__('Giỏ hàng')}}</a></li>
+                            <li><a href="{{route('home.registration')}}">{{__('Đăng nhập')}}</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -161,37 +167,6 @@
                 <div class="categorys-product-search">
                     <form action="#" method="get" class="search-form-cat">
                         <div class="search-product form-group">
-                            <select name="catsearch" class="cat-search">
-                                <option value="">Categories</option>
-                                <option value="2">--Women</option>
-                                <option value="3">---T-Shirts</option>
-                                <option value="4">--Men</option>
-                                <option value="5">----Shoose</option>
-                                <option value="6">--Dress</option>
-                                <option value="7">----Tops</option>
-                                <option value="8">---Casual</option>
-                                <option value="9">--Evening</option>
-                                <option value="10">--Summer</option>
-                                <option value="11">---sports</option>
-                                <option value="12">--day</option>
-                                <option value="13">--evening</option>
-                                <option value="14">-----Blouse</option>
-                                <option value="15">--handba</option>
-                                <option value="16">--phone</option>
-                                <option value="17">-house</option>
-                                <option value="18">--Beauty</option>
-                                <option value="19">--health</option>
-                                <option value="20">---clothing</option>
-                                <option value="21">---kids</option>
-                                <option value="22">--Dresse</option>
-                                <option value="22">---Casual</option>
-                                <option value="23">--day</option>
-                                <option value="24">--evening</option>
-                                <option value="24">---Blouse</option>
-                                <option value="25">-handb</option>
-                                <option value="66">--phone</option>
-                                <option value="27">---house</option>
-                            </select>
                             <input type="text" class="form-control search-form" name="s"
                                    placeholder="Enter your search key ... "/>
                             <button class="search-button" value="Search" name="s" type="submit">
@@ -215,39 +190,37 @@
                     <div class="shopping-cart">
                         <a class="shop-link" href="{{route('home.shopping-cart')}}" title="View my shopping cart">
                             <i class="fa fa-shopping-cart cart-icon"></i>
-                            <b>My Cart</b>
-                            <span class="ajax-cart-quantity">2</span>
+                            <b>Giỏ Hàng</b>
+                            <span class="ajax-cart-quantity"><?= (session('cart') ? count(session('cart')) : 0) ?></span>
                         </a>
-                        <div class="shipping-cart-overly">
+                        @php $totals = 0;@endphp
+                        <div class="shipping-cart-overly" style="overflow: auto;">
+                            <?php if (session('cart')) :?>
+
+                            <?php foreach (session('cart') as $order):?>
+                                @php $totals += (int) $order['quantity'] * (int) $order['price'] @endphp
                             <div class="shipping-item">
                                 <span class="cross-icon"><i class="fa fa-times-circle"></i></span>
                                 <div class="shipping-item-image">
-                                    <a href="#"><img src="{{asset('img/shopping-image.jpg')}}" alt="shopping image" /></a>
+                                    <a href="#"><img style="height: 50px ;width: 50px" src="{{asset('images/product/'. $order['image'])}}" alt="shopping image"/></a>
                                 </div>
                                 <div class="shipping-item-text">
-                                    <span>2 <span class="pro-quan-x">x</span> <a href="#" class="pro-cat">Watch</a></span>
-                                    <span class="pro-quality"><a href="#">S,Black</a></span>
-                                    <p>$22.95</p>
+                                    <span><?= $order['quantity'] ?><span class="pro-quan-x"> x</span>
+                                        <a href="#" class="pro-cat"><?= $order['price'] ?></a></span>
+{{--                                    <span class="pro-quality"><a href="#">S,Gary</a></span>--}}
                                 </div>
                             </div>
-                            <div class="shipping-item">
-                                <span class="cross-icon"><i class="fa fa-times-circle"></i></span>
-                                <div class="shipping-item-image">
-                                    <a href="#"><img src="img/shopping-image2.jpg" alt="shopping image" /></a>
-                                </div>
-                                <div class="shipping-item-text">
-                                    <span>2 <span class="pro-quan-x">x</span> <a href="#" class="pro-cat">Women Bag</a></span>
-                                    <span class="pro-quality"><a href="#">S,Gary</a></span>
-                                    <p>$19.95</p>
-                                </div>
-                            </div>
+                            <?php endforeach; ?>
+                                <?php else: ?>
+                                <p>Không có sản phẩm nào</p>
+                                <?php endif ?>
                             <div class="shipping-total-bill">
                                 <div class="cart-prices">
                                     <span class="shipping-cost">$2.00</span>
                                     <span>Shipping</span>
                                 </div>
                                 <div class="total-shipping-prices">
-                                    <span class="shipping-total">$24.95</span>
+                                    <span class="shipping-total"><?= number_format($totals) ?> đồng</span>
                                     <span>Total</span>
                                 </div>
                             </div>
@@ -267,30 +240,21 @@
                             <li class="active"><a href="{{route('frontend.home')}}">Home</a>
                             </li>
                             <li>
-                                <a href="{{route('home.category')}}">Danh mục</a>
+                                <a href="">Danh mục</a>
                                 <!-- DRODOWN-MEGA-MENU START -->
                                 <div class="drodown-mega-menu">
-                                    <div class="left-mega col-xs-6">
+                                    <?php foreach ($catalog as $item): ?>
+                                    <div class="<?= $item['type'] ?>-mega col-xs-6">
                                         <div class="mega-menu-list">
-                                            <a class="mega-menu-title" href="shop-gird.html">Bánh ngọt</a>
+                                            <a class="mega-menu-title" href="{{route('home.category',['id' => $item['id']])}}"><?= $item['name'] ?></a>
                                             <ul>
-                                                <li><a href="shop-gird.html">T-shirts</a></li>
-                                                <li><a href="shop-gird.html">clothing</a></li>
-                                                <li><a href="shop-gird.html">Delivery</a></li>
+                                                <?php foreach ($item['childs'] as $value): ?>
+                                                <li><a href="{{route('home.category',['id' => $value['id']])}}"><?= $value['name'] ?></a></li>
+                                                <?php endforeach; ?>
                                             </ul>
                                         </div>
                                     </div>
-                                    <div class="right-mega col-xs-6">
-                                        <div class="mega-menu-list">
-                                            <a class="mega-menu-title" href="shop-gird.html">Bánh mặn</a>
-                                            <ul>
-                                                <li><a href="shop-gird.html">T-shirts</a></li>
-                                                <li><a href="shop-gird.html">clothing</a></li>
-                                                <li><a href="shop-gird.html">Watch</a></li>
-                                                <li><a href="shop-gird.html">Delivery</a></li>
-                                            </ul>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
                                 <!-- DRODOWN-MEGA-MENU END -->
                             </li>

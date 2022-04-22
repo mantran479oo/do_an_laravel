@@ -17,8 +17,24 @@ class ProductRepository extends EloquentRepository implements ProductRepositoryI
         return Product::class;
     }
 
-    public function findBycolumn(string $column, $value)
+    public function findBycolumn(string $column,$condition, $value,$limit = 10)
     {
-        return $this->_model::where($column, $value)->get();
+        return $this->_model::where($column,$condition, $value)->paginate($limit);
     }
+
+    public function getPriceSales()
+    {
+        return $this->_model->with('getSales')
+            ->where(
+                ProductRepositoryInterface::COLUMN_NEW,
+                '=',
+                ProductRepositoryInterface::VALUE_SALE)
+            ->get();
+    }
+
+    public function getDetail($id)
+    {
+      return  $this->_model::with('getSales')->find($id);
+    }
+
 }

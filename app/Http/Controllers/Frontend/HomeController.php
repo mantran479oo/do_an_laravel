@@ -2,10 +2,16 @@
 
 namespace App\Http\Controllers\Frontend;
 
+use App\Helper\Helper;
 use App\Http\Controllers\Controller;
+use App\Repositories\Repository\CatalogRepository;
 use App\Repositories\Repository\Interfaces\ProductRepositoryInterface;
-use App\Services\Admin\ProductServices;
+use App\Repositories\Repository\OrderRepository;
+use App\Repositories\Repository\ProductRepository;
+use App\Services\Frontend\ProductServices;
+use App\Services\Frontend\CatalogServices;
 use Illuminate\Contracts\View\View;
+use Illuminate\Http\Request;
 
 class HomeController extends Controller
 {
@@ -19,9 +25,15 @@ class HomeController extends Controller
      */
     public function __construct
     (
-        ProductServices $productServices
+        OrderRepository $orderRepository,
+        ProductRepository $productRepository,
+        ProductServices $productServices,
+        CatalogRepository $catalogRepository
     )
     {
+        $this->catalogRepository = $catalogRepository;
+        $this->order = $orderRepository;
+        $this->productRepository = $productRepository;
         $this->productServices = $productServices;
     }
 
@@ -31,7 +43,9 @@ class HomeController extends Controller
     public function index()
     {
         $productNew = $this->productServices->getProductNew();
-        return view('frontend.home',compact('productNew'));
+        $productSale = $this->productRepository->getPriceSales();
+        $productFeatured = $this->productServices->getProductFeatured();
+        return view('frontend.home',compact('productNew','productSale','productFeatured'));
     }
 
 
@@ -50,8 +64,27 @@ class HomeController extends Controller
         return view('frontend.registration');
     }
 
-    public function category()
+    public function category(Request $request ,$id)
     {
-        return view('frontend.category');
+        $limit = $request->limit;
+        $nameCategory = $this->catalogRepository->find($id);
+        $product = $this->productRepository->findBycolumn(ProductRepository::COLUMN_CATEGORY_ID,Helper::CONST_EQUAL,$id,8);
+        return view('frontend.category-grid',compact('product','nameCategory'));
+    }
+
+    public function productDetail(int $id)
+    {
+        $this->productServices->viewProduct($id);
+        $detail = $this->productRepository->getDetail($id);
+        return view('frontend.detail-product',compact('detail'));
+    }
+
+    public function myAccount()
+    {
+        return \view('frontend.my-account');
+    }
+    public function wishList()
+    {
+        return view('frontend.wishlist');
     }
 }

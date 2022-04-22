@@ -3,18 +3,25 @@
 namespace App\Repositories\Repository\Interfaces;
 
 use App\Repositories\Frames\RepositoryInterface;
-use Illuminate\Database\Eloquent\Collection;
 
 interface ProductRepositoryInterface extends RepositoryInterface
 {
-    const COLUMN_NEW = 'new';
-    const VALUE_NEW = 1;
+    public const COLUMN_NEW = 'new';
+    public const VALUE_NEW = 1;
+    public const VALUE_SALE = 2;
+    public const COLUMN_CATEGORY_ID = 'category_id';
+    public const COLUMN_SELL_NUMBER = 'sell_number';
+    public const VALUE_SELL_NUMBER = '5';
+
 
     /**
      * @param string $column
+     * @param $condition
      * @param $value
-     * @return Collection
+     * @return mixed
      */
-    public function findBycolumn(string $column , $value);
+    public function findBycolumn(string $column , $condition, $value,$limit = 10);
+
+    public function getDetail($id);
 
 }
